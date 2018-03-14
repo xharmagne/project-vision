@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     .force("charge", d3.forceManyBody())
     .force("center", d3.forceCenter(width / 2, height / 2));
 
-  d3.json("http://localhost:5000/intelligence/relationships?transaction=200000", function(error, graph) {
+  d3.json("http://localhost:5000/intelligence/relationships?transaction=200193", function(error, graph) {
     if (error) throw error;
 
     // const graph = data;
@@ -35,11 +35,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     let link = svg
       .append("g")
-      .attr("class", "links")
       .selectAll("line")
       .data(graph.transactions)
       .enter()
       .append("line")
+      .attr("class", function(d) {
+        const css = ['links'];
+        if (d.id === graph.transaction.id) {
+          css.push('focus');
+        }
+        if (d.score === 1) {
+          css.push('suspect');
+        }
+        return css.join(' ');
+      })
       .attr("stroke-width", 8)
       .on("click", linkClicked);
 
@@ -52,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       .append("circle")
       .attr("r", 20)
       .attr("fill", function(d) {
-        return color(d.group);
+        return d.score === 1 ? '#f00' : color(d.group);
       })
 
       .on("click", nodeClicked)
