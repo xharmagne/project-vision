@@ -9,6 +9,7 @@ import { argv } from 'yargs';
 import config from '../config';
 import { reportTransaction } from '../src/services/bankService';
 import { waitForReceipt } from '../src/services/ethersjs';
+import { getAccount } from '../src/services/accountService';
 
 export const provider = new providers.JsonRpcProvider(config.gethUrl, {
   chainId: 8995,
@@ -29,6 +30,9 @@ export function sleep(t) {
 }
 
 async function main() {
+  const accounts = getAccount('62880035');
+  console.log(accounts);
+
   let wallet;
   if (argv.bank === 'a') {
     wallet = bankA;
@@ -38,6 +42,7 @@ async function main() {
 
   while (true) {
     const result = await reportTransaction(wallet, {
+      id: '13123',
       from: '0123456789',
       to: '9876543210',
       amount: 1000,

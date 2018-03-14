@@ -10,6 +10,7 @@ contract Transactions is Owned, RolesInterface {
 
   event Transaction(
     address indexed bankAddress,
+    string id,
     string from,
     string to,
     uint amount,
@@ -17,11 +18,12 @@ contract Transactions is Owned, RolesInterface {
     string description);
 
   function report(
+    string id,
     string from,
     string to,
     uint amount,
     string currency,
     string description) {
-      Transaction(msg.sender, from, to, amount, currency, description);
-    }
+      Transaction(msg.sender, id, from, to, amount, currency, description);
+  }
 }

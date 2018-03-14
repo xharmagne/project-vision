@@ -9,7 +9,6 @@ export async function reportTransaction(wallet, tx) {
     deployedContracts = await getContracts();
   }
 
-  console.log(wallet);
   const contract = new ContractInterface(
     deployedContracts.Transactions.address,
     deployedContracts.Transactions.interface,
@@ -17,6 +16,7 @@ export async function reportTransaction(wallet, tx) {
   );
 
   const transaction = await contract.report(
+    tx.id,
     tx.from,
     tx.to,
     tx.amount,
