@@ -104,6 +104,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         .style("top", y > window.innerHeight / 2 ? y - 20 - 70 : y + 20)
         .style("left", x > window.innerWidth / 2 ? x - 20 - 150 : x + 20)
         .text(`${d.description} — $${d.amount}`);
+
+      drilldown(d.id);
     }
 
     function nodeClicked(d, i) {
@@ -177,7 +179,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
   function drilldown(transactionId) {
-    history.pushState({ transaction: transactionId }, null `?transaction=${transactionId}`);
+    console.log(transactionId);
+    history.pushState({ transaction: transactionId }, null, `?transaction=${transactionId}`);
 
     // TODO: update graph
   }
