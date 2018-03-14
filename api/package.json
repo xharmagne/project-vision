@@ -23,6 +23,8 @@
     "down": "npm run docker:down",
     "contracts:compile": "./node_modules/babel-cli/bin/babel-node.js ./node_modules/gulp/bin/gulp.js compile",
     "contracts:deploy": "./node_modules/babel-cli/bin/babel-node.js ./bin/deploy.js",
+    "bank:a": "./node_modules/babel-cli/bin/babel-node.js ./bin/bank.js --bank=a",
+    "bank:b": "./node_modules/babel-cli/bin/babel-node.js ./bin/bank.js --bank=b",
     "docker:up": "docker-compose up -d ethermint postgres",
     "docker:down": "docker-compose down",
     "db:migrate": "node_modules/.bin/sequelize db:migrate",
@@ -111,7 +113,8 @@
     "solc": "0.4.10",
     "superagent": "^3.5.2",
     "through2": "^2.0.3",
-    "wait-for-port": "^0.0.2"
+    "wait-for-port": "^0.0.2",
+    "yargs": "^11.0.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

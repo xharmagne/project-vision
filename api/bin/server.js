@@ -10,6 +10,9 @@ import cors from 'kcors';
 import config from '../config';
 import { errorMiddleware } from '../src/middleware';
 import validate from 'koa-validate';
+import { getLatestEvents } from '../src/services/austrackService';
+
+setInterval(getLatestEvents, config.eventsInterval);
 
 const app = new Koa();
 

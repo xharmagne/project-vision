@@ -26,6 +26,6 @@ module.exports = {
     '^http(s)?://(localhost|127.0.0.1|(.+.)?commbanklabs.com.au).*$',
   tokenDuration: 60 * 60 * 2 /* 2 hours */,
   gas: 243597000,
-  eventsInterval: 120000,
+  eventsInterval: 500,
   usersPassword: 'C@nch@in!',
 };

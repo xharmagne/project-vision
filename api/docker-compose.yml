@@ -23,7 +23,7 @@ services:
   ethermint:
     image: cbainnovationlab/ethermint:latest
     environment:
-      ETH_GENESIS_CONTENT: "{\"config\":{\"chainId\":8995,\"homesteadBlock\":0,\"eip155Block\":0,\"eip158Block\":0},\"nonce\":\"0xdeadbeefdeadbeef\",\"timestamp\":\"0x00\",\"parentHash\":\"0x0000000000000000000000000000000000000000000000000000000000000000\",\"mixhash\":\"0x0000000000000000000000000000000000000000000000000000000000000000\",\"difficulty\":\"0x40\",\"gasLimit\":\"0x800000000\",\"alloc\":{\"0x61a030e24f3105e4df1c322b4fd23b9ea2490165\":{\"balance\":\"10000000000000000000000000000000000\"}}}"
+      ETH_GENESIS_CONTENT: "{\"config\":{\"chainId\":8995,\"homesteadBlock\":0,\"eip155Block\":0,\"eip158Block\":0},\"nonce\":\"0xdeadbeefdeadbeef\",\"timestamp\":\"0x00\",\"parentHash\":\"0x0000000000000000000000000000000000000000000000000000000000000000\",\"mixhash\":\"0x0000000000000000000000000000000000000000000000000000000000000000\",\"difficulty\":\"0x40\",\"gasLimit\":\"0x800000000\",\"alloc\":{\"0x61a030e24f3105e4df1c322b4fd23b9ea2490165\":{\"balance\":\"10000000000000000000000000000000000\"},\"0xf062088D93A7f580A8721536999622dA21c4176b\":{\"balance\":\"10000000000000000000000000000000000\"},\"0x3919f2739BB9288BC51bFe7845492ad4481e0BDc\":{\"balance\":\"10000000000000000000000000000000000\"}}}"
     command: "--rpc --rpcapi \"admin,db,eth,debug,miner,net,shh,txpool,personal,web3\" --rpcaddr=\"0.0.0.0\" --rpccorsdomain=\"*\"  --gasprice=\"0\"  --targetgaslimit=\"34359738368\""
     ports:
       - "8545:8545"
