@@ -33,8 +33,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     t.target = t.to;
   });
 
-  console.log("t", graph);
-
   let link = svg
     .append("g")
     .attr("class", "links")
@@ -42,7 +40,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     .data(graph.transactions)
     .enter()
     .append("line")
-    .attr("stroke-width", 1);
+    .attr("stroke-width", 8)
+    .on("click", linkClicked);
 
   let node = svg
     .append("g")
@@ -56,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       return color(d.group);
     })
 
-    .on("click", clicked)
+    .on("click", nodeClicked)
     .call(
       d3
         .drag()
@@ -65,10 +64,30 @@ document.addEventListener("DOMContentLoaded", function(event) {
         .on("end", dragended)
     );
 
-  function clicked(d, i) {
+  function linkClicked(d, i) {
     if (d3.event.defaultPrevented) return; // dragged
-    console.log(d);
-    console.log(i);
+
+    d3
+      .select(this)
+      .transition()
+      .style("stroke", "black")
+      .transition()
+      .style("stroke", "#999");
+
+    var x = (d.source.x + d.target.x) / 2;
+    var y = (d.source.y + d.target.y) / 2;
+
+    d3
+      .select("#info")
+      .style("visibility", "visible")
+      .style("top", y > window.innerHeight / 2 ? y - 20 - 70 : y + 20)
+      .style("left", x > window.innerWidth / 2 ? x - 20 - 150 : x + 20)
+      .text(`${d.description} — $${d.amount}`);
+  }
+
+  function nodeClicked(d, i) {
+    if (d3.event.defaultPrevented) return; // dragged
+
     d3
       .select(this)
       .transition()
@@ -76,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       .attr("r", 40)
       .transition()
       .attr("r", 20)
-      .style("fill", color(1));
+      .style("fill", color(d.group));
 
     d3
       .select("#info")
