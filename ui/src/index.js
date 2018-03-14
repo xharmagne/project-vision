@@ -4,8 +4,8 @@ import company from "./company.svg";
 
 document.addEventListener("DOMContentLoaded", function(event) {
   const svg = d3.select("svg");
-  const width = svg.attr("width");
-  const height = svg.attr("height");
+  const width = window.innerWidth;
+  const height = window.innerHeight;
 
   let color = d3.scaleOrdinal(d3.schemeCategory20);
 
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         .id(function(d) {
           return d.accountNumber;
         })
-        .distance(80)
+        .distance(120)
         .strength(1)
     )
     .force("charge", d3.forceManyBody())
@@ -51,11 +51,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     .data(graph.accounts)
     .enter()
     .append("circle")
-    .attr("r", 10)
+    .attr("r", 20)
     .attr("fill", function(d) {
       return color(d.group);
     })
-    // .attr("fill", "url(#company)")
+
+    .on("click", clicked)
     .call(
       d3
         .drag()
@@ -63,6 +64,27 @@ document.addEventListener("DOMContentLoaded", function(event) {
         .on("drag", dragged)
         .on("end", dragended)
     );
+
+  function clicked(d, i) {
+    if (d3.event.defaultPrevented) return; // dragged
+    console.log(d);
+    console.log(i);
+    d3
+      .select(this)
+      .transition()
+      .style("fill", "black")
+      .attr("r", 40)
+      .transition()
+      .attr("r", 20)
+      .style("fill", color(1));
+
+    d3
+      .select("#info")
+      .style("visibility", "visible")
+      .style("top", d.y > window.innerHeight / 2 ? d.y - 20 - 70 : d.y + 20)
+      .style("left", d.x > window.innerWidth / 2 ? d.x - 20 - 150 : d.x + 20)
+      .text(d.name);
+  }
 
   node.append("title").text(function(d) {
     return d.name;
