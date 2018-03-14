@@ -89,7 +89,7 @@ export async function getLogs(contract, eventName, fromBlock, toBlock) {
     contract.interface,
     provider
   );
-  const Event = contractInstance.interface.events[eventName]();
+  const Event = contractInstance.interface.events[eventName];
 
   const logs = await provider.getLogs({
     fromBlock: fromBlock,
@@ -210,7 +210,7 @@ function decodeParameters(abi, input) {
 }
 
 function decodeParams(types, data) {
-  return Interface.decodeParams(types, data);
+  return utils.AbiCoder.defaultCoder.decode(types, data);
 }
 
 function parseBigNumber(number) {

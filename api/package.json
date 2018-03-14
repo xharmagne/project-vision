@@ -99,7 +99,7 @@
     "lodash": "^4.17.4",
     "memory-cache": "^0.1.6",
     "moment": "^2.18.1",
-    "node-ethers": "^3.0.0",
+    "node-ethers": "^3.0.4",
     "node-uuid": "^1.4.8",
     "nyc": "^10.3.2",
     "passport-local": "^1.0.0",

@@ -4303,9 +4303,9 @@ no-case@^2.2.0:
   dependencies:
     lower-case "^1.1.1"
 
-node-ethers@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/node-ethers/-/node-ethers-3.0.0.tgz#0beceb4745f13ce4a48d527ac8573fcad439dee5"
+node-ethers@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/node-ethers/-/node-ethers-3.0.4.tgz#5a54ac31bf4d153d4624079c0cf419b451f587c2"
   dependencies:
     aes-js "3.0.0"
     bn.js "^4.4.0"
