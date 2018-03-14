@@ -21,10 +21,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         .id(function(d) {
           return d.accountNumber;
         })
-        .distance(250)
-        .strength(1.5)
+        .distance(70)
+        .strength(1)
     )
-    .force("charge", d3.forceManyBody())
+    .force("charge", d3.forceManyBody().strength(-150))
     .force("center", d3.forceCenter(width / 2, height / 2));
 
   let transactionId = history.state ? history.state.transaction : null;
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
               ? d3.symbolSquare
               : d3.symbolCircle;
           })
-          .size(`${40 * 40}`)
+          .size(`${35 * 35}`)
       )
       .attr("fill", function(d) {
         return d.score === 1 ? "#f00" : color(d.group);
@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
           d3
             .symbol()
             .type(d.type === "Organisation" ? d3.symbolSquare : d3.symbolCircle)
-            .size(`${40 * 40}`)
+            .size(`${35 * 35}`)
         );
 
       hideQuickInfo();
