@@ -1,18 +1,46 @@
 import * as faker from 'faker';
 import * as fs from 'fs';
 
-const allAccounts = [];
+const domesticAccounts = [];
 for (let i = 0; i < 10000; i++) {
-  allAccounts.push({
+  domesticAccounts.push({
     accountNumber: faker.finance.account(),
     name: faker.name.findName(),
     score: Math.random() < 0.95 ? 0 : 1,
+    country: 'AU',
   });
 }
 
+const internationalAccounts = [];
+for (let i = 0; i < 100; i++) {
+  domesticAccounts.push({
+    accountNumber: faker.finance.account(),
+    name: faker.name.findName(),
+    score: Math.random() < 0.95 ? 0 : 1,
+    country: 'US',
+  });
+}
+
+const organisationAccounts = [];
+for (let i = 0; i < 100; i++) {
+  organisationAccounts.push({
+    accountNumber: faker.finance.account(),
+    name: faker.name.findName(),
+    score: i < 10 ? 0 : 1,
+    type: 'Organisation',
+    country: 'AU',
+  });
+}
+
+const localAccounts = domesticAccounts.concat(organisationAccounts);
+const allAccounts = domesticAccounts
+  .concat(internationalAccounts)
+  .concat(organisationAccounts);
+
 const allTransactions = [];
 for (let i = 0; i < 20000; i++) {
-  const fromAccount = allAccounts[Math.floor(Math.random() * allAccounts.length)];
+  const fromAccount =
+    localAccounts[Math.floor(Math.random() * localAccounts.length)];
   const toAccount = allAccounts[Math.floor(Math.random() * allAccounts.length)];
   allTransactions.push({
     id: (200000 + i).toString(),
@@ -25,4 +53,7 @@ for (let i = 0; i < 20000; i++) {
 }
 
 fs.writeFileSync('accounts.json', JSON.stringify(allAccounts, null, '  '));
-fs.writeFileSync('transactions.json', JSON.stringify(allTransactions, null, '  '));
+fs.writeFileSync(
+  'transactions.json',
+  JSON.stringify(allTransactions, null, '  ')
+);
