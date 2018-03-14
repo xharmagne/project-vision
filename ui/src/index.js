@@ -13,9 +13,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
     .forceSimulation()
     .force(
       "link",
-      d3.forceLink().id(function(d) {
-        return d.accountNumber;
-      })
+      d3
+        .forceLink()
+        .id(function(d) {
+          return d.accountNumber;
+        })
+        .distance(80)
+        .strength(1)
     )
     .force("charge", d3.forceManyBody())
     .force("center", d3.forceCenter(width / 2, height / 2));
@@ -27,7 +31,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   graph.transactions.forEach(t => {
     t.source = t.from;
     t.target = t.to;
-    t.value = 10;
   });
 
   console.log("t", graph);
@@ -48,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     .data(graph.accounts)
     .enter()
     .append("circle")
-    .attr("r", 15)
+    .attr("r", 10)
     .attr("fill", function(d) {
       return color(d.group);
     })
@@ -62,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     );
 
   node.append("title").text(function(d) {
-    return d.id;
+    return d.name;
   });
 
   simulation.nodes(graph.accounts).on("tick", ticked);
