@@ -1,23 +1,8 @@
 import models from '../../models';
-import * as faker from 'faker';
+import allAccounts from '../../../data/accounts.json';
+import allTransactions from '../../../data/transactions.json';
 
-const allAccounts = [];
-for (let i = 0; i < 100; i++) {
-  allAccounts.push({
-    accountNumber: faker.finance.account(),
-    name: faker.name.findName(),
-  });
-}
-
-const allTransactions = [];
-for (let i = 0; i < 1000; i++) {
-  allTransactions.push({
-    from: allAccounts[Math.floor(Math.random() * allAccounts.length)].accountNumber,
-    to: allAccounts[Math.floor(Math.random() * allAccounts.length)].accountNumber,
-    amount: faker.finance.amount(),
-    description: faker.lorem.words(3),
-  });
-}
+const MAX_RELATIONSHIP_DEPTH = 1;
 
 export async function calculateScore(ctx) {
   ctx.status = 200;
@@ -25,17 +10,77 @@ export async function calculateScore(ctx) {
 }
 
 export async function getRelationships(ctx) {
-  const transactions = allTransactions.slice(0, 10);
-  const accounts = allAccounts.filter((a) => transactions.some((t) => t.from === a.accountNumber || t.to === a.accountNumber));
-  console.log(transactions.length);
+  const transaction = allTransactions.filter((t) => t.id === ctx.query.transaction)[0];
+
+  if (!transaction) {
+    ctx.status = 404;
+    return;
+  }
+
+  const fromAccount = transaction.from;
+  const toAccount = transaction.to;
+
+  let transactions = [ transaction ];
+  let accounts = allAccounts.filter((a) => a.accountNumber === toAccount || a.accountNumber === fromAccount);
+  const { accounts: toAccounts, transactions: toTransactions } = getRelatedToAccountsAndTransactions(toAccount, 0);
+  const { accounts: fromAccounts, transactions: fromTransactions } = getRelatedFromAccountsAndTransactions(fromAccount, 0);
+
+  accounts = accounts.concat(toAccounts).concat(fromAccounts);
+  transactions = transactions.concat(toTransactions).concat(fromTransactions);
+
   ctx.status = 200;
   ctx.body = {
-    transaction: {
-      id: ctx.params.transactionId,
-      description: 'Transfer to mum',
-      date: '2018-03-02',
-    },
-    accounts: accounts,
-    transactions: transactions,
+    transaction,
+    accounts,
+    transactions,
+  };
+}
+
+function getSourceTransactions(accountNumber) {
+  return allTransactions.filter((t) => t.from === accountNumber);
+}
+
+function getTargetTransactions(accountNumber) {
+  return allTransactions.filter((t) => t.to === accountNumber);
+}
+
+function getRelatedToAccountsAndTransactions(accountNumber, depth) {
+  let transactions = allTransactions.filter((t) => t.from === accountNumber);
+  console.log(`To account: ${accountNumber}, transactions ${transactions.length}`);
+  let accounts = allAccounts
+    .filter((a) => a.accountNumber !== accountNumber)
+    .filter((a) => transactions.some((t) => t.to === a.accountNumber));
+
+  if (depth < MAX_RELATIONSHIP_DEPTH) {
+    for (const account of accounts) {
+      const children = getRelatedToAccountsAndTransactions(account.accountNumber, depth + 1);
+      accounts = accounts.concat(children.accounts);
+      transactions = transactions.concat(children.transactions);
+    }
+  }
+
+  return {
+    accounts,
+    transactions
+  };
+}
+
+function getRelatedFromAccountsAndTransactions(accountNumber, depth) {
+  let transactions = allTransactions.filter((t) => t.to === accountNumber);
+  let accounts = allAccounts
+    .filter((a) => a.accountNumber !== accountNumber)
+    .filter((a) => transactions.some((t) => t.from === a.accountNumber));
+
+  if (depth < MAX_RELATIONSHIP_DEPTH) {
+    for (const account of accounts) {
+      const children = getRelatedFromAccountsAndTransactions(account.accountNumber, depth + 1);
+      accounts = accounts.concat(children.accounts);
+      transactions = transactions.concat(children.transactions);
+    }
+  }
+
+  return {
+    accounts,
+    transactions
   };
 }

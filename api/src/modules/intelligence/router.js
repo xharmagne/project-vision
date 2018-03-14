@@ -7,7 +7,7 @@ export const baseUrl = '/intelligence';
 export default [
   {
     method: 'GET',
-    route: '/relationships/:transactionId',
+    route: '/relationships',
     handlers: [intelligence.getRelationships],
   },
   {
