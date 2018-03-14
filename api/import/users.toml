@@ -1,0 +1,15 @@
+[users]
+
+  [users.bank1]
+  username       = 'user@bank1.com'
+  password       = 'B@nk!'
+  fullName       = 'Bank 1'
+  role           = 'bank'
+  contactNumber  = '0400000000'
+
+  [users.bank2]
+  username       = 'user@bank2.com'
+  password       = 'B@nk!'
+  fullName       = 'Bank 2'
+  role           = 'bank'
+  contactNumber  = '0400000001'
