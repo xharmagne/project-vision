@@ -89,6 +89,12 @@ export async function deployContracts() {
   }
   const RolesAddr = await deploy('Roles', binaries.contracts.Roles);
 
+  const TransactionsAddr = await deploy(
+    'Transactions',
+    binaries.contracts.Transactions,
+    RolesAddr
+  );
+
   console.log('------------------------------------');
   console.log('Roles Address: ' + RolesAddr);
   console.log('------------------------------------');

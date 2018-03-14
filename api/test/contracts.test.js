@@ -25,7 +25,7 @@ describe('Contracts', () => {
           if (err) {
             return done(err);
           }
-          expect(res.body).to.have.length(1);
+          expect(res.body).to.have.length(2);
           done();
         });
     });
