@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         .id(function(d) {
           return d.accountNumber;
         })
-        .distance(120)
-        .strength(1)
+        .distance(250)
+        .strength(1.5)
     )
     .force("charge", d3.forceManyBody())
     .force("center", d3.forceCenter(width / 2, height / 2));
@@ -76,8 +76,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
     .selectAll("circle")
     .data(graph.accounts)
     .enter()
-    .append("circle")
-    .attr("r", 20)
+    .append("path")
+    .attr(
+      "d",
+      d3
+        .symbol()
+        .type(function(d) {
+          return d.type === "Organisation" ? d3.symbolSquare : d3.symbolCircle;
+        })
+        .size(`${40 * 40}`)
+    )
     .attr("fill", function(d) {
       return d.score === 1 ? "#f00" : color(d.group);
     })
@@ -145,7 +153,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
     d3
       .select(this)
       .transition()
-      .attr("r", 30);
+      .attr(
+        "d",
+        d3
+          .symbol()
+          .type(d.type === "Organisation" ? d3.symbolSquare : d3.symbolCircle)
+          .size(`${60 * 60}`)
+      );
 
     d3
       .select("#info")
@@ -155,11 +169,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
       .text(d.name);
   }
 
-  function hideQuickInfoForNode() {
+  function hideQuickInfoForNode(d, i) {
     d3
       .select(this)
       .transition()
-      .attr("r", 20);
+      .attr(
+        "d",
+        d3
+          .symbol()
+          .type(d.type === "Organisation" ? d3.symbolSquare : d3.symbolCircle)
+          .size(`${40 * 40}`)
+      );
 
     hideQuickInfo();
   }
@@ -214,13 +234,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
         return d.target.y;
       });
 
-    node
-      .attr("cx", function(d) {
-        return d.x;
-      })
-      .attr("cy", function(d) {
-        return d.y;
-      });
+    node.attr("transform", function(d) {
+      return `translate(${d.x},${d.y})`;
+    });
   }
   // });
 
