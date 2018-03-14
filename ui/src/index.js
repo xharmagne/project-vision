@@ -24,7 +24,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
     .force("charge", d3.forceManyBody())
     .force("center", d3.forceCenter(width / 2, height / 2));
 
-  d3.json("http://localhost:5000/intelligence/relationships?transaction=200193", function(error, graph) {
+  let transactionId = history.state ? history.state.transaction : null;
+
+  if (!transactionId) {
+    const match = /\btransaction=([^&]+)/gi.exec(location.search);
+    if (match) {
+      transactionId = match[1];
+    } else {
+      transactionId = '200193'; // default
+    }
+    history.replaceState({ transaction: transactionId }, null, `?transaction=${transactionId}`);
+  }
+
+  d3.json(`http://localhost:5000/intelligence/relationships?transaction=${transactionId}`, function(error, graph) {
     if (error) throw error;
 
     // const graph = data;
@@ -162,5 +174,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     if (!d3.event.active) simulation.alphaTarget(0);
     d.fx = null;
     d.fy = null;
+  }
+
+  function drilldown(transactionId) {
+    history.pushState({ transaction: transactionId }, null `?transaction=${transactionId}`);
+
+    // TODO: update graph
   }
 });
