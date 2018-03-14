@@ -44,6 +44,7 @@ for (let i = 0; i < 20000; i++) {
   const toAccount = allAccounts[Math.floor(Math.random() * allAccounts.length)];
   allTransactions.push({
     id: (200000 + i).toString(),
+    date: faker.date.past(2),
     from: fromAccount.accountNumber,
     to: toAccount.accountNumber,
     amount: faker.finance.amount(),
