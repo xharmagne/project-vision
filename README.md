@@ -1,5 +1,7 @@
 # Project Vision
 
+[Other documentation can be found here](https://drive.google.com/open?id=1p-779vpmg7MEBABwttttpQEp2TsB8E5W)
+
 ## Problem
 - Incomplete feedback loop for suspicious matter reporting - entites get no confirmation of their reported suspicions
 - Incomplete data - entities are isolated and Austrac only gets some data
