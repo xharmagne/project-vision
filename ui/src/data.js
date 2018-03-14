@@ -2,7 +2,8 @@ export default {
   accounts: [
     {
       accountNumber: "39538746",
-      name: "Tevin Zemlak"
+      name: "Tevin Zemlak",
+      type: "Organisation"
     },
     {
       accountNumber: "73622125",
@@ -22,7 +23,8 @@ export default {
     },
     {
       accountNumber: "52198814",
-      name: "Reginald Bahringer"
+      name: "Reginald Bahringer",
+      type: "Organisation"
     },
     {
       accountNumber: "50384671",
@@ -34,7 +36,8 @@ export default {
     },
     {
       accountNumber: "11545798",
-      name: "Clementine Cruickshank"
+      name: "Clementine Cruickshank",
+      type: "Organisation"
     },
     {
       accountNumber: "81580505",
@@ -66,7 +69,8 @@ export default {
     },
     {
       accountNumber: "62689689",
-      name: "Jazmyne Larkin"
+      name: "Jazmyne Larkin",
+      score: 1
     },
     {
       accountNumber: "44722891",
@@ -74,10 +78,19 @@ export default {
     },
     {
       accountNumber: "67944569",
-      name: "Adelbert O'Reilly"
+      name: "Adelbert O'Reilly",
+      type: "Organisation",
+      score: 1
     }
   ],
   transactions: [
+    {
+      from: "62689689",
+      to: "67944569",
+      amount: "21.57",
+      description: "culpa aut",
+      score: 1
+    },
     {
       from: "39538746",
       to: "34951948",
