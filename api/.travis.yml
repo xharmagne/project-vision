@@ -1,0 +1,33 @@
+sudo: required
+services:
+- docker
+language: node_js
+node_js:
+- '8'
+python:
+- "2.7"
+cache:
+  yarn: true
+  directories:
+  - node_modules
+env:
+- CXX=g++-4.8
+addons:
+  postgresql: "9.4"
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
+before_install:
+- export TZ=Australia/Sydney
+- export DB_HOSTNAME=localhost
+before_script:
+- "psql -c 'create database austrac;' -U postgres"
+- docker-compose up -d ethermint
+- yarn run db:migrate
+- yarn run contracts:compile
+- yarn run contracts:deploy
+- yarn run docs
+script:
+- yarn run test:coverage

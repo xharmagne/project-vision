@@ -1,0 +1,32 @@
+version: '2'
+services:
+  test:
+    image: gcr.io/${PROJECT_ID}/austrac-api:latest
+    command: "yarn ci"
+    environment:
+      GETH_URL: http://ethermint:8545
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+      - ethermint
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: austrac
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+  ethermint:
+    image: cbainnovationlab/ethermint:latest
+    environment:
+      ETH_GENESIS_CONTENT: "{\"config\":{\"chainId\":8995,\"homesteadBlock\":0,\"eip155Block\":0,\"eip158Block\":0},\"nonce\":\"0xdeadbeefdeadbeef\",\"timestamp\":\"0x00\",\"parentHash\":\"0x0000000000000000000000000000000000000000000000000000000000000000\",\"mixhash\":\"0x0000000000000000000000000000000000000000000000000000000000000000\",\"difficulty\":\"0x40\",\"gasLimit\":\"0x800000000\",\"alloc\":{\"0x61a030e24f3105e4df1c322b4fd23b9ea2490165\":{\"balance\":\"10000000000000000000000000000000000\"}}}"
+    command: "--rpc --rpcapi \"admin,db,eth,debug,miner,net,shh,txpool,personal,web3\" --rpcaddr=\"0.0.0.0\" --rpccorsdomain=\"*\"  --gasprice=\"0\"  --targetgaslimit=\"34359738368\""
+    ports:
+      - "8545:8545"
+      - "46656:46656"
+    expose:
+      - "8545"
