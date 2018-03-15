@@ -10,13 +10,16 @@ export async function calculateScore(ctx) {
 }
 
 export async function getTransactions(ctx) {
-  let transactions = allTransactions.sort((a, b) => (a.date < b.date ? -1 : 1));
+  let transactions = allTransactions
+    .sort((a, b) => (a.date < b.date ? -1 : 1))
+    .reverse();
+
+  transactions = transactions.slice(0, 100);
 
   if (ctx.query.mode === 'suspect') {
     transactions = transactions.filter(t => t.score === 1);
   }
 
-  transactions = transactions.slice(0, 100);
   ctx.status = 200;
   ctx.body = transactions;
 }

@@ -15,8 +15,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     page = match[1];
   }
 
-  displayContainer(page);
-
   document.querySelector("#filterAll").addEventListener("click", () => {
     window.location.href = `?page=transactions&mode=all`;
   });
@@ -32,6 +30,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     document.children[0].style.overflowY = "hidden";
     displayRelationships();
   }
+
+  displayContainer(page);
 });
 
 function displayContainer(container) {
