@@ -1,6 +1,6 @@
 import models from '../../models';
 import allAccounts from '../../../data/accounts.json';
-import allTransactions from '../../../data/transactions.json';
+import { getTransactions as getTx } from '../../services/transactionService';
 
 const MAX_RELATIONSHIP_DEPTH = 1;
 
@@ -10,7 +10,7 @@ export async function calculateScore(ctx) {
 }
 
 export async function getTransactions(ctx) {
-  let transactions = allTransactions
+  let transactions = getTx()
     .sort((a, b) => (a.date < b.date ? -1 : 1))
     .reverse();
 
@@ -25,7 +25,7 @@ export async function getTransactions(ctx) {
 }
 
 export async function getRelationships(ctx) {
-  const transaction = allTransactions.filter(
+  const transaction = getTx().filter(
     t => t.id === ctx.query.transaction
   )[0];
 
@@ -62,15 +62,15 @@ export async function getRelationships(ctx) {
 }
 
 function getSourceTransactions(accountNumber) {
-  return allTransactions.filter(t => t.from === accountNumber);
+  return getTx().filter(t => t.from === accountNumber);
 }
 
 function getTargetTransactions(accountNumber) {
-  return allTransactions.filter(t => t.to === accountNumber);
+  return getTx().filter(t => t.to === accountNumber);
 }
 
 function getRelatedToAccountsAndTransactions(accountNumber, depth) {
-  let transactions = allTransactions.filter(t => t.from === accountNumber);
+  let transactions = getTx().filter(t => t.from === accountNumber);
   console.log(
     `To account: ${accountNumber}, transactions ${transactions.length}`
   );
@@ -96,7 +96,7 @@ function getRelatedToAccountsAndTransactions(accountNumber, depth) {
 }
 
 function getRelatedFromAccountsAndTransactions(accountNumber, depth) {
-  let transactions = allTransactions.filter(t => t.to === accountNumber);
+  let transactions = getTx().filter(t => t.to === accountNumber);
   let accounts = allAccounts
     .filter(a => a.accountNumber !== accountNumber)
     .filter(a => transactions.some(t => t.from === a.accountNumber));

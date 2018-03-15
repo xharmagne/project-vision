@@ -10,8 +10,7 @@ let state = {
   transactions: [],
 };
 
-export async function getTransactions() {
-  await getLatestEvents();
+export function getTransactions() {
   return state.transactions;
 }
 
@@ -69,7 +68,9 @@ export async function getLatestEvents() {
 
     state = {
       blockNumber: latestBlock,
-      transactions: [...presentState.transactions, ...scoredTransactions],
+      transactions: [...presentState.transactions, ...scoredTransactions].slice(
+        -10000
+      ),
     };
   }
 
