@@ -15,6 +15,7 @@ export async function reportTransaction(wallet, tx) {
     wallet
   );
 
+  console.log(tx);
   const transaction = await contract.report(
     tx.id,
     tx.from,
@@ -22,8 +23,11 @@ export async function reportTransaction(wallet, tx) {
     tx.amount,
     tx.currency,
     tx.description,
+    tx.date.valueOf(),
     transactionOptions
   );
+
+  console.log(`${tx.date} ${tx.from} -> ${tx.to} - $${tx.amount}`);
 
   return transaction.hash;
 }

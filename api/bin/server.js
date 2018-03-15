@@ -10,7 +10,7 @@ import cors from 'kcors';
 import config from '../config';
 import { errorMiddleware } from '../src/middleware';
 import validate from 'koa-validate';
-import { getLatestEvents } from '../src/services/austrackService';
+import { getLatestEvents } from '../src/services/transactionService';
 
 setInterval(getLatestEvents, config.eventsInterval);
 

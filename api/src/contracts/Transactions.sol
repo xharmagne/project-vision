@@ -15,7 +15,8 @@ contract Transactions is Owned, RolesInterface {
     string to,
     uint amount,
     string currency,
-    string description);
+    string description,
+    uint date);
 
   function report(
     string id,
@@ -23,7 +24,8 @@ contract Transactions is Owned, RolesInterface {
     string to,
     uint amount,
     string currency,
-    string description) {
-      Transaction(msg.sender, id, from, to, amount, currency, description);
+    string description,
+    uint date) {
+      Transaction(msg.sender, id, from, to, amount, currency, description, date);
   }
 }

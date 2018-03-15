@@ -1,3 +1,4 @@
+import * as faker from 'faker';
 import {
   Wallet,
   providers,
@@ -7,9 +8,10 @@ import {
 } from 'node-ethers';
 import { argv } from 'yargs';
 import config from '../config';
+import { getAccounts } from '../src/services/accountService';
 import { reportTransaction } from '../src/services/bankService';
 import { waitForReceipt } from '../src/services/ethersjs';
-import { getAccount } from '../src/services/accountService';
+import { score } from '../src/services/aiService';
 
 export const provider = new providers.JsonRpcProvider(config.gethUrl, {
   chainId: 8995,
@@ -29,10 +31,32 @@ export function sleep(t) {
   return new Promise((resolve, reject) => setTimeout(resolve, t));
 }
 
-async function main() {
-  const accounts = getAccount('62880035');
-  console.log(accounts);
+const allAccounts = getAccounts();
 
+const domesticAccounts = allAccounts.filter(
+  a => a.country === 'AU' && a.type !== 'Organisation'
+);
+const internationalAccounts = allAccounts.filter(a => a.country !== 'AU');
+const organisationAccounts = allAccounts.filter(a => a.type === 'Organisation');
+const localAccounts = domesticAccounts.concat(organisationAccounts);
+
+function generateRandomTx() {
+  const fromAccount =
+    localAccounts[Math.floor(Math.random() * localAccounts.length)];
+  const toAccount = allAccounts[Math.floor(Math.random() * allAccounts.length)];
+  return {
+    id: faker.random.uuid(),
+    date: new Date(),
+    from: fromAccount.accountNumber,
+    to: toAccount.accountNumber,
+    amount: faker.random.number({ min: 100, max: 2000000 }),
+    currency: 'AUD',
+    description: faker.lorem.words(3, 2),
+    score: fromAccount.score === 1 || toAccount.score === 1 ? 1 : 0,
+  };
+}
+
+async function main() {
   let wallet;
   if (argv.bank === 'a') {
     wallet = bankA;
@@ -41,14 +65,8 @@ async function main() {
   }
 
   while (true) {
-    const result = await reportTransaction(wallet, {
-      id: '13123',
-      from: '0123456789',
-      to: '9876543210',
-      amount: 1000,
-      currency: 'AUD',
-      description: 'Something dodgy',
-    });
+    let tx = generateRandomTx();
+    let result = await reportTransaction(wallet, tx);
 
     await waitForReceipt(result);
 
