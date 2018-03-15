@@ -252,9 +252,16 @@ function displayRelationships() {
 
         d3.select("#details_img").attr("src", transaction);
 
-        d3.select("#details_text1").text(d.amount);
+        let fromAccount = graph.accounts.filter((a) => a.accountNumber === d.from)[0];
+        let toAccount = graph.accounts.filter((a) => a.accountNumber === d.to)[0];
 
-        d3.select("#details_text2").text(d.description);
+        d3.select("#details_text1").text(`From: ${fromAccount.name} (${fromAccount.accountNumber})`);
+
+        d3.select("#details_text2").text(`To: ${toAccount.name} (${toAccount.accountNumber})`);
+
+        d3.select("#details_text3").text(`Amount: $${d.amount}`);
+
+        d3.select("#details_text4").text(`Description: ${d.description}`);
 
         drilldown(d.id);
       }
@@ -330,6 +337,8 @@ function displayRelationships() {
         d3.select("#details_text1").text("");
 
         d3.select("#details_text2").text("");
+        d3.select("#details_text3").text("");
+        d3.select("#details_text4").text("");
       }
 
       node.append("title").text(function(d) {
