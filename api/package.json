@@ -19,7 +19,7 @@
     "up": "npm run docker:up && ./scripts/tcp-port-wait localhost 5432 && npm run db:migrate && npm run contracts:compile && npm run contracts:deploy && npm run docs",
     "up:seed": "concurrently 'yarn run up && yarn run dev' 'yarn dev:seed'",
     "dev:seed": "wait-on http://localhost:5000/health && API_URL=http://localhost:5000 yarn api:seed",
-    "test:seed": "wait-on https://austrac.api.demo.commbanklabs.com.au/health && API_URL=https://austrac.api.demo.commbanklabs.com.au yarn api:seed",
+    "test:seed": "wait-on https://project-vision.api.demo.commbanklabs.com.au/health && API_URL=https://project-vision.api.demo.commbanklabs.com.au yarn api:seed",
     "down": "npm run docker:down",
     "contracts:compile": "./node_modules/babel-cli/bin/babel-node.js ./node_modules/gulp/bin/gulp.js compile",
     "contracts:deploy": "./node_modules/babel-cli/bin/babel-node.js ./bin/deploy.js",
@@ -35,7 +35,7 @@
     "db:refresh": "npm run db:rollback:all && npm run db:migrate",
     "api:seed": "babel-node bin/import import/users.toml",
     "precommit": "lint-staged",
-    "bootstrap": "yarn run db:rollback:all && yarn run db:migrate && yarn run contracts:deploy && yarn run test:seed"
+    "bootstrap": "yarn run db:rollback:all && yarn run db:migrate && yarn run contracts:deploy"
   },
   "lint-staged": {
     "*.js": [
