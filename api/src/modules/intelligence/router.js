@@ -16,6 +16,11 @@ export default [
     handlers: [intelligence.calculateScore],
   },
   {
+    method: 'GET',
+    route: '/transactions',
+    handlers: [intelligence.getTransactions],
+  },
+  {
     method: 'POST',
     route: '/score',
     handlers: [intelligence.calculateScore],

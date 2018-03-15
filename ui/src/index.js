@@ -5,7 +5,83 @@ import company from "./company.svg";
 import person from "./person.svg";
 import transaction from "./transaction.svg";
 
+const fetch = window.fetch;
+
 document.addEventListener("DOMContentLoaded", function(event) {
+  let page = 'transactions';
+  const match = /\bpage=([^&]+)/gi.exec(location.search);
+  if (match) {
+    page = match[1];
+  }
+
+  displayContainer(page);
+
+  if (page === 'transactions') {
+    displayTransactions();
+  } else if (page === 'relationships') {
+    displayRelationships();
+  }
+});
+
+function displayContainer(container) {
+  document.querySelectorAll('.container').forEach((e) => e.style.display = '');
+  document.querySelector(`#${container}`).style.display = 'block';
+}
+
+function displayTransactions() {
+  let mode = null;
+  const match = /\bmode=([^&]+)/gi.exec(location.search);
+  if (match) {
+    mode = match[1];
+  }
+
+  fetch(`http://localhost:5000/intelligence/transactions?mode=${mode}`)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      const tableBody = document.querySelector('#transactions tbody');
+
+      tableBody.childNodes.forEach((c) => {
+        tableBody.removeChild(c);
+      });
+
+      data.forEach((t) => {
+        let tr = document.createElement('tr');
+  
+        let date = document.createElement('td');
+        date.innerText = t.date;
+        tr.appendChild(date);
+  
+        let from = document.createElement('td');
+        from.innerText = t.from;
+        tr.appendChild(from);
+  
+        let to = document.createElement('td');
+        to.innerText = t.to;
+        tr.appendChild(to);
+  
+        let description = document.createElement('td');
+        description.innerText = t.description;
+        tr.appendChild(description);
+  
+        let amount = document.createElement('td');
+        amount.innerText = t.amount;
+        tr.appendChild(amount);
+
+        tr.addEventListener('click', function() {
+          const url = `?page=relationships&transaction=${t.id}`;
+          window.location.href = url;
+        });
+  
+        tableBody.appendChild(tr);
+      });
+    });
+}
+
+function displayRelationships() {
+  document.querySelector('#relationships')
   const svg = d3.select("svg");
   const width = window.innerWidth;
   const height = window.innerHeight;
@@ -36,15 +112,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
     } else {
       transactionId = "200160"; // default
     }
-    history.replaceState(
-      { transaction: transactionId },
-      null,
-      `?transaction=${transactionId}`
-    );
+    // history.replaceState(
+    //   { transaction: transactionId },
+    //   null,
+    //   `?transaction=${transactionId}`
+    // );
   }
 
-  // d3.json(`http://localhost:5000/intelligence/relationships?transaction=${transactionId}`, function(error, graph) {
-  d3.json(`http://localhost:8080/${data}`, function(error, graph) {
+  d3.json(`http://localhost:5000/intelligence/relationships?transaction=${transactionId}`, function(error, graph) {
+  // d3.json(`http://localhost:8080/${data}`, function(error, graph) {
     if (error) throw error;
 
     graph.transactions.forEach(t => {
@@ -279,4 +355,4 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     // TODO: update graph
   }
-});
+}

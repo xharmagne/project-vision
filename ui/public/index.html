@@ -13,6 +13,10 @@
       overflow: hidden;
     }
 
+    .container {
+      display: none;
+    }
+
     .links {
       stroke: #666;
       stroke-opacity: 0.4;
@@ -74,31 +78,52 @@
 </head>
 
 <body>
-  <svg width="100%" height="100%">
-
-  </svg>
-
-  <div id="report">
-    <button>Generate intelligence report</button>
+  <div id="transactions" class="container">
+    <h1>Transactions</h1>
+    <div>
+      <button id="filterAll">All</button>
+      <button id="filterSuspect">Suspect</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Source</th>
+          <th>Destination</th>
+          <th>Description</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
+  <div id="relationships" class="container">
+    <svg width="100%" height="100%">
 
-  <div id="info">
-    Hello
-  </div>
-
-  <div id="details">
-    <div style="text-align: center">
-      <img id="details_img" src="7f1ece825dacf1d2834f6eb788bc1179.svg" width="100" height="100" />
+      </svg>
+    
+      <div id="report">
+        <button>Generate intelligence report</button>
+      </div>
+    
+      <div id="info">
+        Hello
+      </div>
+    
+      <div id="details">
+        <div style="text-align: center">
+          <img id="details_img" src="7f1ece825dacf1d2834f6eb788bc1179.svg" width="100" height="100" />
+        </div>
+        <div id="details_name" style="text-align: center; padding-top:10px; font-size: 1.5rem">
+        </div>
+        <div id="details_text1" style="text-align: left; padding-top:20px; font-size: 1rem">
+        </div>
+        <div id="details_text2" style="text-align: left; padding-top:10px; font-size: 1rem">
+        </div>
+        <div id="details_text3" style="text-align: left; padding-top:10px; font-size: 1rem">
+        </div>
+      </div>
     </div>
-    <div id="details_name" style="text-align: center; padding-top:10px; font-size: 1.5rem">
-    </div>
-    <div id="details_text1" style="text-align: left; padding-top:20px; font-size: 1rem">
-    </div>
-    <div id="details_text2" style="text-align: left; padding-top:10px; font-size: 1rem">
-    </div>
-    <div id="details_text3" style="text-align: left; padding-top:10px; font-size: 1rem">
-    </div>
-  </div>
 </body>
 
 </html>
