@@ -16,6 +16,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   displayContainer(page);
 
+  document.querySelector('#filterAll').addEventListener('click', () => {
+    window.location.href = `?page=transactions&mode=all`;
+  });
+
+  document.querySelector('#filterSuspect').addEventListener('click', () => {
+    window.location.href = `?page=transactions&mode=suspect`;
+  });
+
   if (page === 'transactions') {
     displayTransactions();
   } else if (page === 'relationships') {
@@ -33,6 +41,14 @@ function displayTransactions() {
   const match = /\bmode=([^&]+)/gi.exec(location.search);
   if (match) {
     mode = match[1];
+  }
+
+  if (mode === 'suspect') {
+    document.querySelector('#filterAll').className = 'inactive';
+    document.querySelector('#filterSuspect').className = 'active';
+  } else {
+    document.querySelector('#filterAll').className = 'active';
+    document.querySelector('#filterSuspect').className = 'inactive';
   }
 
   fetch(`http://localhost:5000/intelligence/transactions?mode=${mode}`)
