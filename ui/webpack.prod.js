@@ -42,7 +42,6 @@ module.exports = {
       title: "AFrame",
       template: "public/index.html",
       inject: "head"
-    }),
-    new BundleAnalyzerPlugin()
+    })
   ]
 };
